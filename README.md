@@ -1,3 +1,13 @@
+---
+title: Mo
+emoji: 🚀
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Mo Project
 
 A full-stack application consisting of:
