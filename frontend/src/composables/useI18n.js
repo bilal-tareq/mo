@@ -15,7 +15,8 @@ const messages = {
       customers: 'العملاء',
       suppliers: 'الموردين',
       system: 'النظام',
-      branch: 'الفرع'
+      branch: 'الفرع',
+      powerbi: 'تحليلات Power BI'
     },
     dash: {
       welcome: 'مرحباً،',
@@ -93,7 +94,8 @@ const messages = {
       customers: 'Customers',
       suppliers: 'Suppliers',
       system: 'System',
-      branch: 'Branch'
+      branch: 'Branch',
+      powerbi: 'Power BI Analytics'
     },
     dash: {
       welcome: 'Welcome,',

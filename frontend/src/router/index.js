@@ -37,6 +37,7 @@ const routes = [
       { path: 'customers',   name: 'branch-customers',  component: () => import('@/views/branch/CustomersView.vue') },
       { path: 'suppliers',   name: 'branch-suppliers',  component: () => import('@/views/branch/SuppliersView.vue') },
       { path: 'sales',       name: 'branch-sales',      component: () => import('@/views/branch/SalesView.vue') },
+      { path: 'powerbi',     name: 'branch-powerbi',    component: () => import('@/views/branch/PowerBIDashboardView.vue') },
     ],
   },
 

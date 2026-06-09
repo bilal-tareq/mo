@@ -138,3 +138,84 @@ class TopProductsView(APIView):
               .order_by('-units_sold')[:limit]
         )
         return Response(list(data))
+
+
+class PowerBIEmbedInfoView(APIView):
+    """GET /api/v1/reports/powerbi-embed/
+    Fetches details required to embed a Power BI report using Service Principal auth.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from django.conf import settings
+        import requests
+        from msal import ConfidentialClientApplication
+
+        tenant_id = settings.POWERBI_TENANT_ID
+        client_id = settings.POWERBI_CLIENT_ID
+        client_secret = settings.POWERBI_CLIENT_SECRET
+        workspace_id = settings.POWERBI_WORKSPACE_ID
+        report_id = settings.POWERBI_REPORT_ID
+
+        # Verify configuration is provided
+        if not all([tenant_id, client_id, client_secret, workspace_id, report_id]):
+            return Response({
+                "error": "Power BI settings are not fully configured in backend."
+            }, status=500)
+
+        # 1. Authenticate with Azure AD to get an access token for the Service Principal
+        authority = f"https://login.microsoftonline.com/{tenant_id}"
+        app = ConfidentialClientApplication(
+            client_id,
+            authority=authority,
+            client_credential=client_secret
+        )
+        scopes = ["https://analysis.windows.net/powerbi/api/.default"]
+        token_result = app.acquire_token_for_client(scopes=scopes)
+
+        if "access_token" not in token_result:
+            return Response({
+                "error": "Failed to authenticate with Azure AD",
+                "details": token_result.get("error_description", "Unknown error")
+            }, status=400)
+
+        access_token = token_result["access_token"]
+        headers = {"Authorization": f"Bearer {access_token}"}
+
+        # 2. Get report details (to obtain the correct embedUrl)
+        report_url = f"https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/reports/{report_id}"
+        try:
+            report_response = requests.get(report_url, headers=headers, timeout=10)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Failed to contact Power BI APIs", "details": str(e)}, status=502)
+
+        if report_response.status_code != 200:
+            return Response({
+                "error": "Failed to fetch report details from Power BI",
+                "details": report_response.text
+            }, status=report_response.status_code)
+
+        report_data = report_response.json()
+        embed_url = report_data.get("embedUrl")
+
+        # 3. Generate the Embed Token for this report and workspace
+        token_url = f"https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/reports/{report_id}/GenerateToken"
+        token_body = {"accessLevel": "View"}
+        try:
+            token_response = requests.post(token_url, json=token_body, headers=headers, timeout=10)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Failed to contact Power BI token endpoint", "details": str(e)}, status=502)
+
+        if token_response.status_code != 200:
+            return Response({
+                "error": "Failed to generate Embed Token from Power BI",
+                "details": token_response.text
+            }, status=token_response.status_code)
+
+        embed_token = token_response.json().get("token")
+
+        return Response({
+            "reportId": report_id,
+            "embedUrl": embed_url,
+            "embedToken": embed_token
+        })

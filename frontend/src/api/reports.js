@@ -6,4 +6,5 @@ export const reportsApi = {
   salesTrend:       (params) => client.get('/reports/sales-trend/', { params }),
   inventory:        (params) => client.get('/reports/inventory/', { params }),
   topProducts:      (params) => client.get('/reports/top-products/', { params }),
+  powerbiEmbed:     () => client.get('/reports/powerbi-embed/'),
 }

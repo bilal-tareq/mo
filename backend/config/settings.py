@@ -179,3 +179,10 @@ if not CORS_ALLOW_ALL_ORIGINS:
 
 # Security headers for production behind HTTPS proxies (like Hugging Face)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Power BI Embedded Configuration
+POWERBI_TENANT_ID = config('POWERBI_TENANT_ID', default='')
+POWERBI_CLIENT_ID = config('POWERBI_CLIENT_ID', default='')
+POWERBI_CLIENT_SECRET = config('POWERBI_CLIENT_SECRET', default='')
+POWERBI_WORKSPACE_ID = config('POWERBI_WORKSPACE_ID', default='')
+POWERBI_REPORT_ID = config('POWERBI_REPORT_ID', default='')
