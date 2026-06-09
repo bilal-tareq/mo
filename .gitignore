@@ -1,0 +1,31 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+ENV/
+db.sqlite3
+db.sqlite3-journal
+.env
+media/
+staticfiles/
+
+# Node / Vue / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS Files
+.DS_Store
+Thumbs.db
