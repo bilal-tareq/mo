@@ -19,6 +19,25 @@ urlpatterns = [
     path('api/v1/notifications/', include('apps.notifications.urls')),
 ]
 
+# Serve Vue Frontend
+from django.http import HttpResponse
+from django.template import TemplateDoesNotExist
+from django.shortcuts import render
+
+def frontend_fallback_view(request, path=''):
+    try:
+        return render(request, 'index.html')
+    except TemplateDoesNotExist:
+        return HttpResponse(
+            "Vue frontend is not built yet. Run 'npm run build' in the frontend directory to compile assets.",
+            status=200
+        )
+
+urlpatterns += [
+    path('', frontend_fallback_view, name='index'),
+    path('<path:path>', frontend_fallback_view),
+]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
