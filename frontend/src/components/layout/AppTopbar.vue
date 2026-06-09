@@ -1,9 +1,15 @@
 <template>
   <header class="topbar">
     <div class="topbar-start">
-      <h2 class="page-title">{{ title }}</h2>
+      <h2 class="page-title">{{ translatedTitle }}</h2>
     </div>
     <div class="topbar-end">
+      <!-- Language Switcher -->
+      <button class="lang-btn" @click="toggleLang" id="topbar-lang-toggle">
+        <span class="lang-icon">🌐</span>
+        <span class="lang-text">{{ locale === 'ar' ? 'English' : 'العربية' }}</span>
+      </button>
+
       <!-- Notifications -->
       <div class="notif-btn" @click="toggleNotif" id="topbar-notifications">
         <span class="notif-icon">🔔</span>
@@ -13,8 +19,8 @@
       <!-- Notification Dropdown -->
       <div v-if="showNotif" class="notif-dropdown">
         <div class="notif-header">
-          <span>الإشعارات</span>
-          <button @click="notifStore.markAllRead()">قراءة الكل</button>
+          <span>{{ t('common.notifications') }}</span>
+          <button @click="notifStore.markAllRead()">{{ t('common.readAll') }}</button>
         </div>
         <div class="notif-list">
           <div
@@ -26,32 +32,63 @@
             <div class="notif-title">{{ n.title }}</div>
             <div class="notif-msg">{{ n.message }}</div>
           </div>
-          <div v-if="!notifStore.notifications.length" class="notif-empty">لا توجد إشعارات</div>
+          <div v-if="!notifStore.notifications.length" class="notif-empty">{{ t('common.noNotifs') }}</div>
         </div>
       </div>
 
       <!-- Logout -->
       <button class="logout-btn" id="topbar-logout" @click="handleLogout">
-        <span>خروج</span> 
+        <span>{{ t('common.logout') }}</span> 
       </button>
     </div>
   </header>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useNotificationsStore } from '@/stores/notifications'
 import { useAuth } from '@/composables/useAuth'
+import { useI18n } from '@/composables/useI18n'
 
-defineProps({ title: { type: String, default: '' } })
+const props = defineProps({ title: { type: String, default: '' } })
 
+const route = useRoute()
 const notifStore = useNotificationsStore()
 const { logout: handleLogout } = useAuth()
+const { t, locale, setLocale } = useI18n()
 const showNotif = ref(false)
+
+const translatedTitle = computed(() => {
+  if (props.title) return props.title
+  const name = route.name
+  if (!name) return ''
+  
+  // Map route name to translation key
+  const mapping = {
+    'owner-dashboard':  'nav.dashboard',
+    'owner-branches':   'nav.branches',
+    'owner-reports':    'nav.reports',
+    'owner-users':      'nav.users',
+    'branch-dashboard': 'nav.dashboard',
+    'branch-inventory': 'nav.inventory',
+    'branch-products':  'nav.products',
+    'branch-customers': 'nav.customers',
+    'branch-suppliers': 'nav.suppliers',
+    'branch-sales':     'nav.sales',
+  }
+  
+  const key = mapping[name]
+  return key ? t(key) : name
+})
 
 function toggleNotif() {
   showNotif.value = !showNotif.value
   if (showNotif.value) notifStore.fetchNotifications()
+}
+
+function toggleLang() {
+  setLocale(locale.value === 'ar' ? 'en' : 'ar')
 }
 </script>
 
@@ -71,6 +108,29 @@ function toggleNotif() {
 }
 .page-title { font-size: 1.1rem; font-weight: 700; }
 .topbar-end { display: flex; align-items: center; gap: 1rem; }
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: none;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  padding: .4rem .9rem;
+  font-size: .85rem;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all var(--transition);
+}
+.lang-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+.lang-icon {
+  font-size: 0.95rem;
+}
 
 .notif-btn {
   position: relative;
@@ -93,7 +153,7 @@ function toggleNotif() {
 
 .notif-dropdown {
   position: absolute;
-  top: calc(var(--topbar-height) - 8px); left: 1.5rem;
+  top: calc(var(--topbar-height) - 8px);
   width: 340px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -102,6 +162,15 @@ function toggleNotif() {
   z-index: 200;
   overflow: hidden;
 }
+html[dir="rtl"] .notif-dropdown {
+  left: 1.5rem;
+  right: auto;
+}
+html[dir="ltr"] .notif-dropdown {
+  right: 1.5rem;
+  left: auto;
+}
+
 .notif-header {
   display: flex; justify-content: space-between; align-items: center;
   padding: .75rem 1rem;
@@ -120,7 +189,9 @@ function toggleNotif() {
   transition: background var(--transition);
 }
 .notif-item:hover { background: var(--color-surface-2); }
-.notif-item.unread { border-right: 3px solid var(--color-accent); }
+html[dir="rtl"] .notif-item.unread { border-right: 3px solid var(--color-accent); }
+html[dir="ltr"] .notif-item.unread { border-left: 3px solid var(--color-accent); }
+
 .notif-title { font-size: .85rem; font-weight: 600; }
 .notif-msg   { font-size: .78rem; color: var(--color-text-muted); margin-top: .2rem; }
 .notif-empty { padding: 1.5rem; text-align: center; color: var(--color-text-muted); font-size: .85rem; }

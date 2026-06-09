@@ -30,12 +30,12 @@ const defaultOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { labels: { color: '#7b82a0', font: { family: 'Cairo' } } },
-    tooltip: { backgroundColor: '#1c2030', titleColor: '#e8eaf0', bodyColor: '#7b82a0', borderColor: '#2a2f42', borderWidth: 1 },
+    legend: { labels: { color: '#7e8a9c', font: { family: 'Cairo', size: 12 } } },
+    tooltip: { backgroundColor: '#ffffff', titleColor: '#333f54', bodyColor: '#7e8a9c', borderColor: '#e3e6f0', borderWidth: 1, textDirection: 'rtl' },
   },
   scales: {
-    x: { ticks: { color: '#7b82a0' }, grid: { color: '#2a2f42' } },
-    y: { ticks: { color: '#7b82a0' }, grid: { color: '#2a2f42' } },
+    x: { ticks: { color: '#7e8a9c', font: { family: 'Cairo' } }, grid: { color: '#e3e6f0' } },
+    y: { ticks: { color: '#7e8a9c', font: { family: 'Cairo' } }, grid: { color: '#e3e6f0' } },
   },
 }
 
