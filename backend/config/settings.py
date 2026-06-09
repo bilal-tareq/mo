@@ -1,20 +1,28 @@
 """
-Base settings shared across all environments.
+Consolidated Django settings.
 """
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Since settings.py is in backend/config/settings.py, BASE_DIR should point to backend/.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-me-in-production'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-production')
 
-DEBUG = False
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS', 
+    default='*', 
+    cast=lambda v: [s.strip() for s in v.split(',') if s.strip()] if v else ['*']
+)
 
-# ---------------------------------------------------------------------------
 # Application definition
-# ---------------------------------------------------------------------------
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,10 +68,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+# TEMPLATES configuration (searching frontend/dist if it exists)
+FRONTEND_DIR = BASE_DIR.parent / 'frontend' / 'dist'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.parent / 'frontend' / 'dist'] if (BASE_DIR.parent / 'frontend' / 'dist').exists() else [],
+        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,11 +88,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
-# ---------------------------------------------------------------------------
-# Auth
-# ---------------------------------------------------------------------------
-AUTH_USER_MODEL = 'users.CustomUser'
+# Database Setup
+# Dynamically switch between PostgreSQL (Supabase) and local SQLite
+DB_HOST = config('DB_HOST', default=None)
+if DB_HOST:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='postgres'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
+            'HOST': DB_HOST,
+            'PORT': config('DB_PORT', default='6543'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -90,9 +118,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ---------------------------------------------------------------------------
+# Auth Model
+AUTH_USER_MODEL = 'users.CustomUser'
+
 # REST Framework
-# ---------------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -109,9 +138,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-# ---------------------------------------------------------------------------
 # JWT
-# ---------------------------------------------------------------------------
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -120,17 +147,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# ---------------------------------------------------------------------------
-# Internationalisation
-# ---------------------------------------------------------------------------
+# Internationalization
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Africa/Cairo'
 USE_I18N = True
 USE_TZ = True
 
-# ---------------------------------------------------------------------------
-# Static / Media
-# ---------------------------------------------------------------------------
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
@@ -138,8 +161,20 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FRONTEND_DIR = BASE_DIR.parent / 'frontend' / 'dist'
+# Serve Vue built assets in Django static files
 if FRONTEND_DIR.exists():
     STATICFILES_DIRS = [
         FRONTEND_DIR,
     ]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
+if not CORS_ALLOW_ALL_ORIGINS:
+    CORS_ALLOWED_ORIGINS = config(
+        'CORS_ALLOWED_ORIGINS',
+        cast=lambda v: [s.strip() for s in v.split(',')],
+        default='http://localhost:5173',
+    )
+
+# Security headers for production behind HTTPS proxies (like Hugging Face)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

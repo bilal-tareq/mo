@@ -47,7 +47,7 @@ WORKDIR /app/backend
 
 # Collect all static files (Django admin + Vue SPA)
 # Uses development settings to fallback to SQLite and avoid needing a live DB during build
-RUN python manage.py collectstatic --noinput --settings=config.settings.development
+RUN python manage.py collectstatic --noinput --settings=config.settings
 
 # Expose the port Hugging Face expects (7860)
 EXPOSE 7860
