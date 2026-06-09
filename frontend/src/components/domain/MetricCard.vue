@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <span class="footer-icon">⏳</span>
+        <span class="footer-icon"></span>
         <span class="footer-text">تحديث: {{ lastUpdated }}</span>
       </div>
     </div>

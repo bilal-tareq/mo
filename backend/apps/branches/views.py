@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from .models import Branch
 from .serializers import BranchSerializer
+# pyrefly: ignore [missing-import]
 from apps.users.permissions import IsOwner, IsBranchManager
 
 

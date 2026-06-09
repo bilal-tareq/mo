@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <!-- Logo -->
     <div class="sidebar-logo">
-      <span class="logo-icon">👗</span>
+      <span class="logo-icon"></span>
       <span class="logo-text">Fashion Chain</span>
     </div>
 
@@ -58,10 +58,10 @@ const ownerNav = [
   {
     label: 'nav.system',
     items: [
-      { to: '/owner/dashboard', icon: '📊', label: 'nav.dashboard', id: 'owner-dashboard' },
-      { to: '/owner/branches',  icon: '🏢', label: 'nav.branches',  id: 'owner-branches'  },
-      { to: '/owner/reports',   icon: '📈', label: 'nav.reports',   id: 'owner-reports'   },
-      { to: '/owner/users',     icon: '👥', label: 'nav.users',     id: 'owner-users'     },
+      { to: '/owner/dashboard', icon: '', label: 'nav.dashboard', id: 'owner-dashboard' },
+      { to: '/owner/branches',  icon: '', label: 'nav.branches',  id: 'owner-branches'  },
+      { to: '/owner/reports',   icon: '', label: 'nav.reports',   id: 'owner-reports'   },
+      { to: '/owner/users',     icon: '', label: 'nav.users',     id: 'owner-users'     },
     ]
   }
 ]
@@ -70,12 +70,12 @@ const branchNav = [
   {
     label: 'nav.branch',
     items: [
-      { to: '/branch/dashboard', icon: '📊', label: 'nav.dashboard', id: 'branch-dashboard' },
-      { to: '/branch/sales',     icon: '🛍️', label: 'nav.sales',     id: 'branch-sales'     },
-      { to: '/branch/inventory', icon: '📦', label: 'nav.inventory', id: 'branch-inventory' },
-      { to: '/branch/products',  icon: '🏷️', label: 'nav.products',  id: 'branch-products'  },
-      { to: '/branch/customers', icon: '👥', label: 'nav.customers', id: 'branch-customers' },
-      { to: '/branch/suppliers', icon: '🤝', label: 'nav.suppliers', id: 'branch-suppliers' },
+      { to: '/branch/dashboard', icon: '', label: 'nav.dashboard', id: 'branch-dashboard' },
+      { to: '/branch/sales',     icon: '', label: 'nav.sales',     id: 'branch-sales'     },
+      { to: '/branch/inventory', icon: '', label: 'nav.inventory', id: 'branch-inventory' },
+      { to: '/branch/products',  icon: '', label: 'nav.products',  id: 'branch-products'  },
+      { to: '/branch/customers', icon: '', label: 'nav.customers', id: 'branch-customers' },
+      { to: '/branch/suppliers', icon: '', label: 'nav.suppliers', id: 'branch-suppliers' },
     ]
   }
 ]
