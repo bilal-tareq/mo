@@ -11,7 +11,6 @@ const messages = {
       inventory: 'المخزون',
       products: 'المنتجات',
       customers: 'العملاء',
-      suppliers: 'الموردين',
       system: 'النظام',
       branch: 'الفرع',
       powerbi: 'تحليلات Power BI'
@@ -64,7 +63,6 @@ const messages = {
     activity: {
       addedStock: 'قام بإضافة {qty} قطعة لمنتج "{product}" في المخزن.',
       completedSale: 'أتمت عملية بيع بقيمة {val} ج.م لعميل مسجل حديثاً.',
-      receivedShipment: 'سجل استلام شحنة جديدة من المورد "{supplier}".',
       updatedPerms: 'قامت بتعديل صلاحيات المستخدمين في فرع المعادي.'
     },
     common: {
@@ -89,7 +87,6 @@ const messages = {
       inventory: 'Inventory',
       products: 'Products',
       customers: 'Customers',
-      suppliers: 'Suppliers',
       system: 'System',
       branch: 'Branch',
       powerbi: 'Power BI Analytics'
@@ -142,7 +139,6 @@ const messages = {
     activity: {
       addedStock: 'Added {qty} units of "{product}" to the inventory.',
       completedSale: 'Completed a sale of {val} EGP for a newly registered customer.',
-      receivedShipment: 'Recorded a new shipment from supplier "{supplier}".',
       updatedPerms: 'Updated user permissions in the Maadi branch.'
     },
     common: {

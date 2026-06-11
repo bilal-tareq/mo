@@ -39,7 +39,6 @@ export default function AppSidebar() {
         { to: '/branch/inventory', icon: '', label: 'nav.inventory', id: 'branch-inventory' },
         { to: '/branch/products',  icon: '', label: 'nav.products',  id: 'branch-products'  },
         { to: '/branch/customers', icon: '', label: 'nav.customers', id: 'branch-customers' },
-        { to: '/branch/suppliers', icon: '', label: 'nav.suppliers', id: 'branch-suppliers' },
         { to: '/branch/powerbi',   icon: '📊', label: 'nav.powerbi',  id: 'branch-powerbi'   },
       ]
     }

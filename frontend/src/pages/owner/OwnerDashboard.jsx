@@ -21,7 +21,7 @@ export default function OwnerDashboard() {
     const items = [
       { id: 1, nameAr: 'أحمد علي (مدير فرع)', nameEn: 'Ahmed Ali (Branch Manager)', initial: 'A', textAr: 'قام بإضافة 25 قطعة لمنتج "تيشرت قطن كلاسيك" في المخزن.', textEn: 'Added 25 units of "Classic Cotton T-Shirt" to inventory.', timeAr: 'منذ دقيقتين', timeEn: '2 min ago' },
       { id: 2, nameAr: 'سارة محمود (مديرة فرع)', nameEn: 'Sara Mahmoud (Branch Manager)', initial: 'S', textAr: 'أتمت عملية بيع بقيمة 1,200 ج.م لعميل مسجل حديثاً.', textEn: 'Completed a sale of 1,200 EGP for a newly registered customer.', timeAr: 'منذ 5 دقائق', timeEn: '5 min ago' },
-      { id: 3, nameAr: 'كريم خالد (أمين مخزن)', nameEn: 'Karim Khaled (Storekeeper)', initial: 'K', textAr: 'سجل استلام شحنة جديدة من المورد "الملابس الحديثة".', textEn: 'Recorded a new shipment from supplier "Modern Garments".', timeAr: 'منذ ساعة', timeEn: '1 hour ago' },
+      { id: 3, nameAr: 'كريم خالد (مدير فرع)', nameEn: 'Karim Khaled (Branch Manager)', initial: 'K', textAr: 'قام بتحديث كميات المخزن لفرع الإسكندرية.', textEn: 'Updated inventory quantities for the Alexandria branch.', timeAr: 'منذ ساعة', timeEn: '1 hour ago' },
       { id: 4, nameAr: 'منى أحمد (مدير فرع)', nameEn: 'Mona Ahmed (Branch Manager)', initial: 'M', textAr: 'قامت بتعديل صلاحيات المستخدمين في فرع المعادي.', textEn: 'Updated user permissions in the Maadi branch.', timeAr: 'منذ 3 ساعات', timeEn: '3 hours ago' }
     ]
     return items.map(i => ({ id: i.id, name: locale === 'ar' ? i.nameAr : i.nameEn, initial: locale === 'ar' ? i.nameAr.charAt(0) : i.initial, text: locale === 'ar' ? i.textAr : i.textEn, time: locale === 'ar' ? i.timeAr : i.timeEn }))

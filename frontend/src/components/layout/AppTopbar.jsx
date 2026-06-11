@@ -27,7 +27,6 @@ export default function AppTopbar() {
       'inventory':  'nav.inventory',
       'products':   'nav.products',
       'customers':  'nav.customers',
-      'suppliers':  'nav.suppliers',
       'sales':      'nav.sales',
       'powerbi':    'nav.powerbi',
     }

@@ -19,7 +19,6 @@ import SalesPage from '@/pages/branch/SalesPage'
 import InventoryPage from '@/pages/branch/InventoryPage'
 import ProductsPage from '@/pages/branch/ProductsPage'
 import CustomersPage from '@/pages/branch/CustomersPage'
-import SuppliersPage from '@/pages/branch/SuppliersPage'
 import PowerBIDashboardPage from '@/pages/branch/PowerBIDashboardPage'
 
 export function getDefaultRoute(role) {
@@ -62,7 +61,6 @@ export default function App() {
           <Route path="/branch/inventory" element={<InventoryPage />} />
           <Route path="/branch/products" element={<ProductsPage />} />
           <Route path="/branch/customers" element={<CustomersPage />} />
-          <Route path="/branch/suppliers" element={<SuppliersPage />} />
           <Route path="/branch/powerbi" element={<PowerBIDashboardPage />} />
         </Route>
 

@@ -13,7 +13,6 @@ export function usePermissions() {
       'view:reports':     ['OWNER', 'BRANCH_MANAGER'],
       'manage:products':  ['OWNER', 'BRANCH_MANAGER'],
       'manage:inventory': ['OWNER', 'BRANCH_MANAGER'],
-      'manage:suppliers': ['OWNER', 'BRANCH_MANAGER'],
       'manage:customers': ['OWNER', 'BRANCH_MANAGER'],
       'view:sales':       ['OWNER', 'BRANCH_MANAGER'],
     }
