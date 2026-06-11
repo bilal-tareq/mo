@@ -23,7 +23,7 @@ urlpatterns = [
     path('api/redoc/',          SpectacularRedocView.as_view(url_name='schema'),   name='redoc'),
 ]
 
-# Serve Vue Frontend
+# Serve React Frontend
 from django.http import HttpResponse
 from django.template import TemplateDoesNotExist
 from django.shortcuts import render
@@ -33,7 +33,7 @@ def frontend_fallback_view(request, path=''):
         return render(request, 'index.html')
     except TemplateDoesNotExist:
         return HttpResponse(
-            "Vue frontend is not built yet. Run 'npm run build' in the frontend directory to compile assets.",
+            "React frontend is not built yet. Run 'npm run build' in the frontend directory to compile assets.",
             status=200
         )
 

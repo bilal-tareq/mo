@@ -162,7 +162,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Serve Vue built assets in Django static files
+# Serve React built assets in Django static files
 if FRONTEND_DIR.exists():
     STATICFILES_DIRS = [
         FRONTEND_DIR,
@@ -198,15 +198,16 @@ SPECTACULAR_SETTINGS = {
     ),
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': r'/api/v1/',
     'COMPONENT_SPLIT_REQUEST': True,
     'TAGS': [
-        {'name': 'Auth',      'description': 'Authentication & user management'},
-        {'name': 'Branches',  'description': 'Branch CRUD (Owner only)'},
-        {'name': 'Products',  'description': 'Products, variants & categories'},
-        {'name': 'Inventory', 'description': 'Stock levels, movements & transfers'},
-        {'name': 'Sales',     'description': 'Sales transactions'},
-        {'name': 'Customers', 'description': 'Customer management'},
-        {'name': 'Reports',   'description': 'Dashboard analytics & reports'},
+        {'name': 'auth',      'description': 'Authentication & user management'},
+        {'name': 'branches',  'description': 'Branch CRUD (Owner only)'},
+        {'name': 'products',  'description': 'Products, variants & categories'},
+        {'name': 'inventory', 'description': 'Stock levels, movements & transfers'},
+        {'name': 'sales',     'description': 'Sales transactions'},
+        {'name': 'customers', 'description': 'Customer management'},
+        {'name': 'reports',   'description': 'Dashboard analytics & reports'},
     ],
 }
 

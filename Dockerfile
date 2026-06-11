@@ -1,5 +1,5 @@
 # ==========================================
-# Stage 1: Build the Vue 3 Frontend
+# Stage 1: Build the React Frontend
 # ==========================================
 FROM node:20-alpine AS frontend-builder
 WORKDIR /frontend
@@ -40,12 +40,12 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy Django backend code
 COPY --chown=user ./backend /app/backend
 
-# Copy the built Vue frontend from Stage 1
+# Copy the built React frontend from Stage 1
 COPY --chown=user --from=frontend-builder /frontend/dist /app/frontend/dist
 
 WORKDIR /app/backend
 
-# Collect all static files (Django admin + Vue SPA)
+# Collect all static files (Django admin + React SPA)
 # Uses development settings to fallback to SQLite and avoid needing a live DB during build
 RUN python manage.py collectstatic --noinput --settings=config.settings
 
