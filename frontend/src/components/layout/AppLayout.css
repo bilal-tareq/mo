@@ -1,0 +1,12 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.app-main {
+  margin-right: var(--sidebar-width);
+  margin-top: var(--topbar-height);
+  padding: 1.5rem;
+  flex: 1;
+  min-height: calc(100vh - var(--topbar-height));
+  animation: fadeIn .3s ease;
+}

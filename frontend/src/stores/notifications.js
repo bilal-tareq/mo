@@ -1,37 +1,41 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { create } from 'zustand'
 import { notificationsApi } from '@/api/notifications'
 
-export const useNotificationsStore = defineStore('notifications', () => {
-  const notifications = ref([])
-  const loading       = ref(false)
+export const useNotificationsStore = create((set, get) => ({
+  notifications: [],
+  loading: false,
 
-  const unreadCount = computed(() => notifications.value.filter(n => !n.is_read).length)
+  get unreadCount() {
+    return get().notifications.filter(n => !n.is_read).length
+  },
 
-  async function fetchNotifications() {
-    loading.value = true
+  fetchNotifications: async () => {
+    set({ loading: true })
     try {
       const { data } = await notificationsApi.list()
-      notifications.value = data.results || data
+      set({ notifications: data.results || data })
     } finally {
-      loading.value = false
+      set({ loading: false })
     }
-  }
+  },
 
-  async function markAllRead() {
+  markAllRead: async () => {
     await notificationsApi.markAllRead()
-    notifications.value.forEach(n => (n.is_read = true))
-  }
+    set({
+      notifications: get().notifications.map(n => ({ ...n, is_read: true })),
+    })
+  },
 
-  async function markOneRead(id) {
+  markOneRead: async (id) => {
     await notificationsApi.markOneRead(id)
-    const n = notifications.value.find(n => n.id === id)
-    if (n) n.is_read = true
-  }
+    set({
+      notifications: get().notifications.map(n =>
+        n.id === id ? { ...n, is_read: true } : n
+      ),
+    })
+  },
 
-  function addNotification(notification) {
-    notifications.value.unshift(notification)
-  }
-
-  return { notifications, loading, unreadCount, fetchNotifications, markAllRead, markOneRead, addNotification }
-})
+  addNotification: (notification) => {
+    set({ notifications: [notification, ...get().notifications] })
+  },
+}))

@@ -1,27 +1,24 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { create } from 'zustand'
 import { branchesApi } from '@/api/branches'
 
-export const useBranchesStore = defineStore('branches', () => {
-  const branches       = ref([])
-  const currentBranch  = ref(null)
-  const loading        = ref(false)
+export const useBranchesStore = create((set, get) => ({
+  branches: [],
+  currentBranch: null,
+  loading: false,
 
-  async function fetchBranches() {
-    loading.value = true
+  fetchBranches: async () => {
+    set({ loading: true })
     try {
       const { data } = await branchesApi.list()
-      branches.value = data.results || data
-      if (!currentBranch.value && branches.value.length)
-        currentBranch.value = branches.value[0]
+      const branches = data.results || data
+      set({
+        branches,
+        currentBranch: get().currentBranch || (branches.length ? branches[0] : null),
+      })
     } finally {
-      loading.value = false
+      set({ loading: false })
     }
-  }
+  },
 
-  function setBranch(branch) {
-    currentBranch.value = branch
-  }
-
-  return { branches, currentBranch, loading, fetchBranches, setBranch }
-})
+  setBranch: (branch) => set({ currentBranch: branch }),
+}))

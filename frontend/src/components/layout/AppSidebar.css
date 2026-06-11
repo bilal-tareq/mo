@@ -1,0 +1,83 @@
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: #1b253b;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 0; top: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.logo-icon { font-size: 1.4rem; }
+.logo-text  { font-size: 1.1rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; }
+
+.sidebar-nav { flex: 1; padding: 1.25rem .75rem; display: flex; flex-direction: column; gap: .2rem; }
+
+.nav-group-label {
+  font-size: .7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .75rem .5rem .25rem;
+}
+html[dir="ltr"] .nav-group-label { text-align: left; }
+html[dir="rtl"] .nav-group-label { text-align: right; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem .75rem;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: .88rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
+.nav-item-active {
+  background: linear-gradient(45deg, #fe5d70, #fe9365) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(254, 93, 112, 0.2);
+}
+.nav-icon  { font-size: 1.1rem; width: 20px; text-align: center; }
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: #151d2f;
+}
+.user-avatar {
+  width: 36px; height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .95rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.user-name { font-size: .85rem; font-weight: 600; color: #ffffff; }
+.user-role {
+  font-size: .7rem;
+  margin-top: .2rem;
+  color: #fe9365;
+  background: rgba(254, 147, 101, 0.15);
+  padding: 0.1rem 0.5rem;
+}

@@ -9,10 +9,10 @@ class IsOwner(BasePermission):
 
 
 class IsBranchManager(BasePermission):
-    """Allow access to BRANCH_MANAGER, CASHIER, and OWNER."""
+    """Allow access to BRANCH_MANAGER and OWNER."""
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated
-                    and request.user.role in ('OWNER', 'BRANCH_MANAGER', 'CASHIER'))
+                    and request.user.role in ('OWNER', 'BRANCH_MANAGER'))
 
 
 class IsSameBranch(BasePermission):

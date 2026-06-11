@@ -1,42 +1,41 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { create } from 'zustand'
 import { authApi } from '@/api/auth'
 
-export const useAuthStore = defineStore('auth', () => {
-  const user         = ref(JSON.parse(localStorage.getItem('user') || 'null'))
-  const accessToken  = ref(localStorage.getItem('access_token') || null)
-  const refreshToken = ref(localStorage.getItem('refresh_token') || null)
+export const useAuthStore = create((set, get) => ({
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
+  accessToken: localStorage.getItem('access_token') || null,
+  refreshToken: localStorage.getItem('refresh_token') || null,
 
-  const isAuthenticated = computed(() => !!accessToken.value)
-  const role            = computed(() => user.value?.role || null)
-  const isOwner         = computed(() => role.value === 'OWNER')
-  const isBranchManager = computed(() => ['OWNER', 'BRANCH_MANAGER'].includes(role.value))
+  // Derived
+  get isAuthenticated() { return !!get().accessToken },
+  get role() { return get().user?.role || null },
+  get isOwner() { return get().role === 'OWNER' },
+  get isBranchManager() { return ['OWNER', 'BRANCH_MANAGER'].includes(get().role) },
 
-  async function login(credentials) {
+  login: async (credentials) => {
     const { data } = await authApi.login(credentials)
-    accessToken.value  = data.access
-    refreshToken.value = data.refresh
-    user.value         = data.user
-    localStorage.setItem('access_token',  data.access)
+    set({
+      accessToken: data.access,
+      refreshToken: data.refresh,
+      user: data.user,
+    })
+    localStorage.setItem('access_token', data.access)
     localStorage.setItem('refresh_token', data.refresh)
-    localStorage.setItem('user',          JSON.stringify(data.user))
-  }
+    localStorage.setItem('user', JSON.stringify(data.user))
+    return data
+  },
 
-  async function logout() {
+  logout: async () => {
     try {
-      await authApi.logout({ refresh: refreshToken.value })
+      await authApi.logout({ refresh: get().refreshToken })
     } catch { /* ignore */ }
-    accessToken.value  = null
-    refreshToken.value = null
-    user.value         = null
+    set({ accessToken: null, refreshToken: null, user: null })
     localStorage.clear()
-  }
+  },
 
-  async function fetchProfile() {
+  fetchProfile: async () => {
     const { data } = await authApi.getProfile()
-    user.value = data
+    set({ user: data })
     localStorage.setItem('user', JSON.stringify(data))
-  }
-
-  return { user, accessToken, refreshToken, isAuthenticated, role, isOwner, isBranchManager, login, logout, fetchProfile }
-})
+  },
+}))

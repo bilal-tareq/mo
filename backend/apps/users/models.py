@@ -8,12 +8,11 @@ class CustomUser(AbstractUser):
     class Role(models.TextChoices):
         OWNER           = 'OWNER',          'Owner'
         BRANCH_MANAGER  = 'BRANCH_MANAGER', 'Branch Manager'
-        CASHIER         = 'CASHIER',        'Cashier'
 
     role = models.CharField(
         max_length=20,
         choices=Role.choices,
-        default=Role.CASHIER,
+        default=Role.BRANCH_MANAGER,
     )
     branch = models.ForeignKey(
         'branches.Branch',
