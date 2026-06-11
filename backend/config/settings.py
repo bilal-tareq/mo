@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'django_filters',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
@@ -49,7 +50,6 @@ LOCAL_APPS = [
     'apps.sales',
     'apps.customers',
     'apps.reports',
-    'apps.notifications',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -136,6 +136,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # JWT
@@ -185,3 +186,27 @@ POWERBI_CLIENT_ID = config('POWERBI_CLIENT_ID', default='')
 POWERBI_CLIENT_SECRET = config('POWERBI_CLIENT_SECRET', default='')
 POWERBI_WORKSPACE_ID = config('POWERBI_WORKSPACE_ID', default='')
 POWERBI_REPORT_ID = config('POWERBI_REPORT_ID', default='')
+
+# ─── Swagger / OpenAPI Documentation (drf-spectacular) ───────────────────────
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Fashion Chain API',
+    'DESCRIPTION': (
+        'REST API for Fashion Chain — a multi-branch retail management system.\n\n'
+        '**Authentication:** All endpoints (except login) require a JWT Bearer token. '
+        'Obtain a token from `POST /api/v1/auth/login/` then set the `Authorization` header '
+        'to `Bearer <access_token>`.'       
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'TAGS': [
+        {'name': 'Auth',      'description': 'Authentication & user management'},
+        {'name': 'Branches',  'description': 'Branch CRUD (Owner only)'},
+        {'name': 'Products',  'description': 'Products, variants & categories'},
+        {'name': 'Inventory', 'description': 'Stock levels, movements & transfers'},
+        {'name': 'Sales',     'description': 'Sales transactions'},
+        {'name': 'Customers', 'description': 'Customer management'},
+        {'name': 'Reports',   'description': 'Dashboard analytics & reports'},
+    ],
+}
+

@@ -67,9 +67,6 @@ const messages = {
     },
     common: {
       logout: 'خروج',
-      notifications: 'الإشعارات',
-      readAll: 'قراءة الكل',
-      noNotifs: 'لا توجد إشعارات',
       loading: 'جاري التحميل...',
       noData: 'لا توجد بيانات',
       actions: 'إجراءات',
@@ -143,9 +140,6 @@ const messages = {
     },
     common: {
       logout: 'Logout',
-      notifications: 'Notifications',
-      readAll: 'Read All',
-      noNotifs: 'No notifications',
       loading: 'Loading...',
       noData: 'No data',
       actions: 'Actions',
